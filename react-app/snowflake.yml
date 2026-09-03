@@ -1,0 +1,36 @@
+definition_version: "2"
+
+entities:
+  ICESIGHT_ANALYTICS_APP:
+    type: snowflake-app
+    identifier:
+      name: ICESIGHT_ANALYTICS_APP
+      # Deliberately NOT the personal database that `snow app setup` resolves to
+      # from account parameters. Keeping the app inside ICESIGHT.APPS means the
+      # demo stays self-contained in one database, teardown remains a single
+      # DROP DATABASE, and another engineer reproducing this gets the same object
+      # names rather than ones derived from their own username.
+      database: ICESIGHT
+      schema: APPS
+    artifacts:
+      - src: ./*
+        dest: ./
+        ignore:
+          - node_modules
+          - .env*
+          - __pycache__
+          - "*.pyc"
+          - .next
+          - .git
+          - snowflake.log
+          - output
+
+    query_warehouse: COMPUTE_WH
+
+    # Required so `npm ci` can reach the npm registry during the SPCS build.
+    # Substitute an integration available in your own account; list them with
+    #   SHOW EXTERNAL ACCESS INTEGRATIONS;
+    build_eai:
+      name: ALLOW_ALL_EAI
+
+    code_workspace: ICESIGHT.APPS.SNOWFLAKE_APPS

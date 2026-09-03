@@ -1,0 +1,14 @@
+install:
+  commands:
+    - ["npm", "ci", "--include=dev"]
+
+run:
+  command: ["node", ".next/standalone/server.js"]
+
+profile:
+  label: Deepki Portfolio Copilot
+  description: >
+    Embedded copilot panel for Deepki's real-estate ESG platform. An energy manager
+    asks about CRREM pathway exposure, stranded floor area and retrofit priorities;
+    a Snowflake Cortex Agent writes its own SQL over the portfolio and answers.
+  icon: public/icon.svg

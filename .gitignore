@@ -1,0 +1,21 @@
+.env.local
+.env
+node_modules/
+.next/
+*.tsbuildinfo
+output/
+.DS_Store
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+.snowflake/
+*.plan.md
+
+# Internal-only: never share these outside Snowflake. Kept locally and in the
+# internal Snowflake-Solutions repo; excluded from any customer-facing copy.
+AGENTS.md
+react-app/AGENTS.md
+COMPARABLES.md
+SESSION_HANDOFF.md
+DEMO_SCRIPT.md
+FIGURES.md

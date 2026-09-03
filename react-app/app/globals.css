@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+/*
+ * Tailwind v4 resolves `dark:` from prefers-color-scheme by default, but the
+ * theme provider toggles a `.dark` class. Without this the class-based toggle
+ * changes the CSS variables yet leaves every `dark:` utility on its light value.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * THEMING — Deepki brand skin
+ * ---------------------------
+ * The palette is taken from deepki.com: teal as the single dominant accent on
+ * light, generous surfaces. Everything below maps that palette onto the
+ * shadcn token names, so the primitives in components/ui inherit the brand
+ * without any per-component overrides.
+ *
+ * Where a value deviates from the raw brand hex it is for contrast, and the
+ * reason is noted inline. The short version: #00A19A on white is only about
+ * 3:1, so it is reserved for fills, borders and large type, never small text.
+ */
+
+@layer base {
+  :root {
+    /* Brand palette, verbatim from deepki.com */
+    --brand-teal: #00a19a;
+    --brand-teal-deep: #16908a;
+    --brand-teal-darkest: #00615c;
+    --brand-teal-bright: #1fdfd5;
+    --brand-teal-tint: #e6f7f6;
+    --brand-ink: #3b3d3e;
+    --brand-grey: #949494;
+    --brand-grey-pale: #f8f8f8;
+    --brand-orange: #ff5600;
+
+    /*
+     * Interactive teal. #00A19A carries white text at only ~2.9:1, and
+     * #16908A at ~3.9:1, so buttons and other filled controls use this
+     * slightly deeper mix, which clears 4.5:1 against white.
+     */
+    --brand-teal-interactive: #00807a;
+
+    --brand-primary: var(--brand-teal-interactive);
+    --brand-primary-foreground: #ffffff;
+
+    /* shadcn semantic tokens — light mode is the demo default */
+    --background: #ffffff;
+    --foreground: var(--brand-ink);
+    --card: #ffffff;
+    --card-foreground: var(--brand-ink);
+    --popover: #ffffff;
+    --popover-foreground: var(--brand-ink);
+
+    --primary: var(--brand-primary);
+    --primary-foreground: var(--brand-primary-foreground);
+
+    /* Secondary and muted surfaces are the pale teal tint, not neutral grey. */
+    --secondary: var(--brand-teal-tint);
+    --secondary-foreground: var(--brand-teal-darkest);
+    --muted: var(--brand-grey-pale);
+    /* Brand grey #949494 is 2.9:1 on white — too weak for hints, so darken. */
+    --muted-foreground: #62676a;
+    --accent: var(--brand-teal-tint);
+    --accent-foreground: var(--brand-teal-darkest);
+
+    --destructive: var(--brand-orange);
+    --destructive-foreground: #ffffff;
+
+    --border: #dfe4e4;
+    --input: #cfd6d6;
+    /* Focus ring uses the bright accent: highly visible against pale surfaces. */
+    --ring: var(--brand-teal);
+    --radius: 0.625rem;
+
+    /* Chart sequence, teal-led. chart-5 is the attention orange, for at-risk series. */
+    --chart-1: var(--brand-teal);
+    --chart-2: var(--brand-teal-darkest);
+    --chart-3: var(--brand-teal-bright);
+    --chart-4: #7fc8c4;
+    --chart-5: var(--brand-orange);
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Brand utilities, for the places the semantic tokens are too blunt. */
+  --color-brand-teal: var(--brand-teal);
+  --color-brand-teal-deep: var(--brand-teal-deep);
+  --color-brand-teal-darkest: var(--brand-teal-darkest);
+  --color-brand-teal-bright: var(--brand-teal-bright);
+  --color-brand-teal-tint: var(--brand-teal-tint);
+  --color-brand-orange: var(--brand-orange);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  .dark {
+    /*
+     * Dark mode is the same brand, inverted: near-black tinted towards teal
+     * rather than towards slate, so the accent does not read as foreign.
+     * The bright accent becomes the primary here — #00807A is too dark to
+     * carry a fill against a dark ground.
+     */
+    --background: #101a19;
+    --foreground: #eef5f4;
+    --card: #172524;
+    --card-foreground: #eef5f4;
+    --popover: #172524;
+    --popover-foreground: #eef5f4;
+
+    --primary: var(--brand-teal-bright);
+    --primary-foreground: #06201e;
+
+    --secondary: #1d302e;
+    --secondary-foreground: #d8f0ee;
+    --muted: #1a2827;
+    /* ~7:1 on the dark card, so hints stay legible. */
+    --muted-foreground: #9bacaa;
+    --accent: #1d302e;
+    --accent-foreground: #d8f0ee;
+
+    --destructive: #ff7a3c;
+    --destructive-foreground: #2a0f03;
+
+    --border: #263634;
+    --input: #2f4340;
+    --ring: var(--brand-teal-bright);
+
+    --chart-1: var(--brand-teal-bright);
+    --chart-2: #7fc8c4;
+    --chart-3: var(--brand-teal);
+    --chart-4: #cdeceb;
+    --chart-5: #ff7a3c;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    /* System stack only: the demo must style correctly with no network. */
+    font-family:
+      ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  /* Keep a visible ring everywhere, on the brand colour. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
